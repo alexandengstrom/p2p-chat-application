@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="ChatApp.View.UserControls.Conversation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChatApp.View.UserControls"
+             xmlns:utilities="clr-namespace:ChatApp.View.Utilities"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <UserControl.Resources>
+        <Style x:Key="HoverButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E5E5E5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RoundedTextBox" TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#e3b0e0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+
+        <DataTemplate x:Key="UserMessageTemplate">
+            <Border Background="{StaticResource AccentBrush1}" CornerRadius="10" Margin="5" Padding="10"
+                    HorizontalAlignment="Right" MinWidth="400" MaxWidth="420">
+                <StackPanel>
+                    <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" FontSize="16"/>
+                    <TextBlock Text="{Binding Path=Date}" FontWeight="Thin" FontSize="10"/>
+                    <TextBlock Text="{Binding Path=Message}" TextWrapping="Wrap" FontSize="12"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="OtherUserMessageTemplate">
+            <Border Background="{StaticResource AccentBrush5}" CornerRadius="10" Margin="5" Padding="10"
+                    HorizontalAlignment="Left" MinWidth="400" MaxWidth="420">
+                <StackPanel>
+                    <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" FontSize="16"/>
+                    <TextBlock Text="{Binding Path=Date}" FontWeight="Thin" FontSize="10"/>
+                    <TextBlock Text="{Binding Path=Message}" TextWrapping="Wrap" FontSize="12"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
+        <utilities:MessageTemplateSelector x:Key="MessageSelector"
+                                       UserMessageTemplate="{StaticResource UserMessageTemplate}"
+                                       OtherUserMessageTemplate="{StaticResource OtherUserMessageTemplate}"/>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" utilities:ScrollHelper.AutoScrollToEnd="{Binding ShouldScrollToEnd}">
+            <ItemsControl ItemsSource="{Binding Path=Messages}" ItemTemplateSelector="{StaticResource MessageSelector}">
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Grid Grid.Row="2" Visibility="{Binding Path=CanSendMessage, Converter={StaticResource BoolToVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Text="{Binding Path=Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Margin="5" Padding="1,1,1,1" Height="40" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding Path=SendMessageCommand}" Key="Enter" />
+                </TextBox.InputBindings>
+            </TextBox>
+
+
+            <Border Grid.Column="1" Grid.Row="1" Background="{StaticResource AccentBrush2}" CornerRadius="10" Height="40" Width="90" HorizontalAlignment="Center" Margin="5">
+                <Button Style="{StaticResource HoverButton}" Command="{Binding Path=SendMessageCommand}" Content="Send" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="40" FontSize="16"/>
+            </Border>
+
+            <Border Grid.Column="2" Grid.Row="1" Background="{StaticResource AccentBrush2}" CornerRadius="10" Height="40" Width="90" HorizontalAlignment="Center" Margin="5">
+                <Button Style="{StaticResource HoverButton}" Command="{Binding Path=SendBuzzCommand}" Content="Buzz" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="40" FontSize="16"/>
+            </Border>
+        </Grid>
+        <Border Visibility="{Binding Path=CanReconnect, Converter={StaticResource BoolToVis}}" Grid.Column="0" Grid.Row="1" Background="{StaticResource AccentBrush2}" CornerRadius="10" Height="40" HorizontalAlignment="Stretch" Margin="5">
+            <Button Style="{StaticResource HoverButton}" Command="{Binding Path=ReconnectCommand}" Content="Reconnect" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="16"/>
+        </Border>
+
+    </Grid>
+
+
+</UserControl>

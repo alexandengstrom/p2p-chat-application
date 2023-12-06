@@ -1,0 +1,65 @@
+﻿<Window x:Class="ChatApp.View.ChatClientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatApp.View"
+        xmlns:userControls="clr-namespace:ChatApp.View.UserControls"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="{Binding Path=WindowTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="600" Width="800"
+        Icon="pack://application:,,,/Images/icon.ico">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding OnClose}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Window.Resources>
+        <Storyboard x:Key="ShakeAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="(Window.Left)"
+                     By="7" Duration="0:0:0.05" 
+                     AutoReverse="True" RepeatBehavior="5x"/>
+            <DoubleAnimation Storyboard.TargetProperty="(Window.Top)"
+                     By="7" Duration="0:0:0.05" 
+                     AutoReverse="True" RepeatBehavior="5x"/>
+        </Storyboard>
+    </Window.Resources>
+
+    <Window.Style>
+        <Style TargetType="Window">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ShouldShake}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource ShakeAnimation}"/>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <userControls:ActiveConversations Grid.Column="0" Grid.Row="3" Grid.RowSpan="1"/>
+        <userControls:InactiveConversations Grid.Column="0" Grid.Row="4" Grid.RowSpan="1"/>
+        <userControls:SidebarRequestView Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
+        <userControls:Conversation Grid.Column="1" Grid.RowSpan="5" Grid.Row="0"/>
+        <userControls:PendingRequestBar Grid.Column="1" Grid.Row="0"/>
+        <userControls:NotificationBar Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" />
+        <TextBlock HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="Active conversations:" FontWeight="Bold" VerticalAlignment="Center"/>
+
+    </Grid>
+</Window>

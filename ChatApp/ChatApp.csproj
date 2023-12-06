@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Images\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\add-friend.png" />
+    <None Remove="Images\bell.png" />
+    <None Remove="Images\icon.ico" />
+    <None Remove="Images\unread-message-icon.png" />
+    <None Remove="Model\NewFile1.txt" />
+    <None Remove="ViewModel\Command\NewFile1.txt" />
+    <None Remove="ViewModel\NewFile1.txt" />
+    <None Remove="View\Utilities\NewFile1.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\add-friend.png" />
+    <Resource Include="Images\bell.png" />
+    <Resource Include="Images\icon.ico" />
+    <Resource Include="Images\unread-message-icon.png" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="ChatApp.View.UserControls.PendingRequestBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"    
+             xmlns:local="clr-namespace:ChatApp.View.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="HoverButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E1E5E5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Visibility="{Binding Path=HasNewRequest, Converter={StaticResource BoolToVis}}" Background="{StaticResource AccentBrush3}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Margin="5, 1, 1, 1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="25" Height="25" Source="pack://application:,,,/Images/add-friend.png"/>
+
+        <Border Grid.Column="2" Background="{StaticResource AcceptBrush}" CornerRadius="10" Height="40" Width="90">
+            <Button Style="{StaticResource HoverButton}" Command="{Binding Path=AcceptRequestCommand}" Content="Accept" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Width="90" Height="40">
+            </Button>
+        </Border>
+
+        <Border Grid.Column="3" Background="{StaticResource DeclineBrush}" CornerRadius="10" Height="40" Width="90">
+            <Button Style="{StaticResource HoverButton}" Command="{Binding Path=DeclineRequestCommand}" Content="Decline" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Width="90" Height="40">
+            </Button>
+        </Border>
+
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" 
+                   Text="{Binding Path=RequestMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                   VerticalAlignment="Center" Margin="2, 1, 1, 1" FontFamily="Segoe UI" FontWeight="SemiBold" FontSize="14" 
+                   Foreground="#333333"/>
+    </Grid>
+</UserControl>
+
+
+
+
