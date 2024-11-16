@@ -1,6 +1,6 @@
 # P2P Chat Application
 
-This repo contains a P2P (peer-to-peer) chat app that my partner and I built using C#. The project was part of the course TDDD49 at Linköping University. The goal of this course was to learn more about C#, Visual Studio, and the MVVM design pattern.
+This repo contains a P2P (peer-to-peer) chat app that my partner and I built using C#. The goal of this course was to learn more about C#, Visual Studio, and the MVVM design pattern.
 
 Our chat app allows people to talk to each other directly over the internet without needing a central server. It's a true peer-to-peer setup, meaning that chats are private and happen directly between users' own internet connections.
 
